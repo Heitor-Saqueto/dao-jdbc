@@ -30,8 +30,25 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
-		
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("DELETE FROM department WHERE id= ? ");
+			
+			st.setInt(1, id);
+			
+			
+			int rows = st.executeUpdate();
+			
+			if(rows == 0) {
+				throw new DbException("Rows not efectet");
+			}
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getLocalizedMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 	}
 
 	@Override
